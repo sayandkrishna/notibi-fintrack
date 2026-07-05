@@ -30,6 +30,7 @@ interface Props {
 export default function AddSheet(p: Props) {
   const { theme } = useTheme();
   const inkHex = theme === "noir" ? "#ffffff" : "#000000";
+  const [amountPadOpen, setAmountPadOpen] = useState(!p.editing);
 
   // picker month follows the selected date
   const [pickY, pickM] = p.date.split("-").map(Number);
@@ -38,6 +39,7 @@ export default function AddSheet(p: Props) {
 
   const key = (v: string) => {
     haptic(4);
+    setAmountPadOpen(true);
     p.setAmount((a) => {
       if (v === "back") return a.slice(0, -1);
       if (v === ".") { if (a.includes(".")) return a; return a === "" ? "0." : a + "."; }
@@ -85,14 +87,30 @@ export default function AddSheet(p: Props) {
 
         <div style={{ flex: 1, overflowY: "auto", padding: "0 20px" }}>
           <div style={{ textAlign: "center", padding: "20px 0 8px" }}>
-            <div style={{ fontSize: 56, fontWeight: 800, letterSpacing: "-2px", color: (parseFloat(p.amount) || 0) > 0 ? "var(--ink,#fff)" : "var(--sub,#8e8e93)", fontVariantNumeric: "tabular-nums" }}>{display}</div>
+            <button
+              onClick={() => { haptic(6); setAmountPadOpen(true); }}
+              aria-label="Edit amount"
+              style={{
+                border: "none", background: "transparent", padding: "0 10px 6px", margin: 0,
+                color: (parseFloat(p.amount) || 0) > 0 ? "var(--ink,#fff)" : "var(--sub,#8e8e93)",
+                cursor: "pointer", fontSize: 56, fontWeight: 800, letterSpacing: "-2px",
+                fontVariantNumeric: "tabular-nums", lineHeight: 1.05,
+              }}
+            >
+              {display}
+            </button>
+            {p.editing && !amountPadOpen && (
+              <div style={{ color: "var(--sub,#8e8e93)", fontSize: 12, fontWeight: 700 }}>
+                Tap amount to change it
+              </div>
+            )}
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8, margin: "8px 0 16px" }}>
             {CATS.map((c) => {
               const on = p.cat === c.key;
               return (
-                <button key={c.key} onClick={() => { haptic(6); p.setCat(c.key); }} className="pressable" style={{
+                <button key={c.key} onClick={() => { haptic(6); setAmountPadOpen(false); p.setCat(c.key); }} className="pressable" style={{
                   display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "8px 2px",
                   border: "none", borderRadius: 16, background: on ? "var(--field,#2c2c2e)" : "transparent",
                   outline: on ? "2px solid var(--ink,#fff)" : "none", outlineOffset: "-2px", cursor: "pointer", color: "var(--ink,#fff)",
@@ -110,6 +128,7 @@ export default function AddSheet(p: Props) {
             </span>
             <input
               value={p.note}
+              onFocus={() => setAmountPadOpen(false)}
               onChange={(e) => p.setNote(e.target.value.slice(0, 120))}
               placeholder={p.cat ? CATS.find((c) => c.key === p.cat)?.name : "Optional note"}
               style={{
@@ -120,7 +139,7 @@ export default function AddSheet(p: Props) {
             />
           </label>
 
-          <button onClick={() => { haptic(6); p.setDatePicker((v) => !v); }} style={{
+          <button onClick={() => { haptic(6); setAmountPadOpen(false); p.setDatePicker((v) => !v); }} style={{
             width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 16px",
             border: "none", borderRadius: 14, background: "var(--field,#2c2c2e)", cursor: "pointer", color: "var(--ink,#fff)", marginBottom: 9,
           }}>
@@ -167,7 +186,7 @@ export default function AddSheet(p: Props) {
             {PAYMENTS.map((pm) => {
               const on = p.pay === pm;
               return (
-                <button key={pm} onClick={() => { haptic(6); p.setPay(pm); }} className="pressable" style={{
+                <button key={pm} onClick={() => { haptic(6); setAmountPadOpen(false); p.setPay(pm); }} className="pressable" style={{
                   flex: 1, padding: 12, border: "none", borderRadius: 13,
                   background: on ? "var(--ink,#fff)" : "var(--field,#2c2c2e)",
                   color: on ? "var(--bg,#000)" : "var(--ink,#fff)", fontWeight: 600, fontSize: 14, cursor: "pointer",
@@ -177,17 +196,18 @@ export default function AddSheet(p: Props) {
           </div>
         </div>
 
-        {/* keypad */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 9, padding: "8px 20px 26px", background: "var(--sheet,#1c1c1e)" }}>
-          {keypad.map((k) => (
-            <button key={k} onClick={() => key(k)} style={{
-              height: 52, border: "none", borderRadius: 15, background: "var(--field,#2c2c2e)", color: "var(--ink,#fff)",
-              fontSize: 24, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              {k === "back" ? <Icon name="back" color={inkHex} size={24} /> : k}
-            </button>
-          ))}
-        </div>
+        {amountPadOpen && (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 9, padding: "8px 20px 26px", background: "var(--sheet,#1c1c1e)" }}>
+            {keypad.map((k) => (
+              <button key={k} onClick={() => key(k)} style={{
+                height: 52, border: "none", borderRadius: 15, background: "var(--field,#2c2c2e)", color: "var(--ink,#fff)",
+                fontSize: 24, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                {k === "back" ? <Icon name="back" color={inkHex} size={24} /> : k}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
