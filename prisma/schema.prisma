@@ -1,0 +1,54 @@
+// Prisma schema — PostgreSQL
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  // Pooled (pgbouncer, transaction mode) connection for the app at runtime.
+  url       = env("DATABASE_URL")
+  // Direct (session mode) connection used by Prisma for migrations.
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  password  String
+  createdAt DateTime  @default(now())
+  expenses  Expense[]
+}
+
+enum Category {
+  FOOD
+  GROCERIES
+  TRANSPORT
+  SHOPPING
+  BILLS
+  ENTERTAINMENT
+  HEALTH
+  TRAVEL
+}
+
+enum PaymentMethod {
+  UPI
+  CARD
+  CASH
+}
+
+model Expense {
+  id        String        @id @default(cuid())
+  amount    Int           // stored in whole rupees
+  category  Category
+  payment   PaymentMethod @default(UPI)
+  // date the expense is attributed to (local calendar day, midnight UTC)
+  date      DateTime
+  note      String?
+  createdAt DateTime      @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+}
