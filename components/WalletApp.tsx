@@ -30,6 +30,7 @@ export default function WalletApp({ userName }: { userName: string }) {
   const [addCat, setAddCat] = useState<CategoryKey | null>(null);
   const [addPay, setAddPay] = useState<PaymentKey>("UPI");
   const [addDate, setAddDate] = useState(TODAY);
+  const [addNote, setAddNote] = useState("");
   const [datePicker, setDatePicker] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -87,12 +88,12 @@ export default function WalletApp({ userName }: { userName: string }) {
   const openAdd = () => {
     haptic(10);
     setEditId(null); setAddAmount(""); setAddCat(null); setAddPay("UPI");
-    setAddDate(TODAY); setDatePicker(false); setAddOpen(true);
+    setAddDate(TODAY); setAddNote(""); setDatePicker(false); setAddOpen(true);
   };
   const startEdit = (e: Expense) => {
     haptic(8);
     setEditId(e.id); setAddAmount(String(e.amount)); setAddCat(e.category);
-    setAddPay(e.payment); setAddDate(e.date); setDatePicker(false); setAddOpen(true);
+    setAddPay(e.payment); setAddDate(e.date); setAddNote(e.note ?? ""); setDatePicker(false); setAddOpen(true);
     setTicketDate(null); // close the ticket view (if open) so the edit sheet sits on top
   };
   const closeAdd = () => { setAddOpen(false); setDatePicker(false); };
@@ -101,13 +102,14 @@ export default function WalletApp({ userName }: { userName: string }) {
     const amt = Math.round(parseFloat(addAmount) || 0);
     if (amt <= 0 || !addCat || saving) { haptic(20); return; }
     haptic(14); setSaving(true);
+    const note = addNote.trim() || undefined;
     try {
       if (editId) {
-        const { expense } = await api.update(editId, { amount: amt, category: addCat, payment: addPay, date: addDate });
+        const { expense } = await api.update(editId, { amount: amt, category: addCat, payment: addPay, date: addDate, note });
         setExpenses((xs) => xs.map((x) => (x.id === editId ? expense : x)));
         setNewId(editId);
       } else {
-        const { expense } = await api.create({ amount: amt, category: addCat, payment: addPay, date: addDate });
+        const { expense } = await api.create({ amount: amt, category: addCat, payment: addPay, date: addDate, note });
         setExpenses((xs) => [expense, ...xs]);
         setNewId(expense.id);
         setScreen("home");
@@ -197,6 +199,8 @@ export default function WalletApp({ userName }: { userName: string }) {
             setPay={setAddPay}
             date={addDate}
             setDate={setAddDate}
+            note={addNote}
+            setNote={setAddNote}
             datePicker={datePicker}
             setDatePicker={setDatePicker}
             saving={saving}

@@ -18,6 +18,8 @@ interface Props {
   setPay: (p: PaymentKey) => void;
   date: string;
   setDate: (iso: string) => void;
+  note: string;
+  setNote: (note: string) => void;
   datePicker: boolean;
   setDatePicker: (b: boolean | ((p: boolean) => boolean)) => void;
   saving: boolean;
@@ -101,6 +103,22 @@ export default function AddSheet(p: Props) {
               );
             })}
           </div>
+
+          <label style={{ display: "block", marginBottom: 9 }}>
+            <span style={{ display: "block", fontSize: 12, fontWeight: 700, color: "var(--sub,#8e8e93)", margin: "0 0 7px 2px" }}>
+              Expense name
+            </span>
+            <input
+              value={p.note}
+              onChange={(e) => p.setNote(e.target.value.slice(0, 120))}
+              placeholder={p.cat ? CATS.find((c) => c.key === p.cat)?.name : "Optional note"}
+              style={{
+                width: "100%", height: 48, padding: "0 15px", border: "none", borderRadius: 14,
+                background: "var(--field,#2c2c2e)", color: "var(--ink,#fff)", outline: "none",
+                fontSize: 15, fontWeight: 600,
+              }}
+            />
+          </label>
 
           <button onClick={() => { haptic(6); p.setDatePicker((v) => !v); }} style={{
             width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 16px",

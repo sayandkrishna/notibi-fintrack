@@ -41,16 +41,20 @@ export default function TicketCard({
         <Row label="TIME" value={expense.time} icon="🕒" />
       </div>
 
-      {/* delete (outside the ticket, like a receipt action) */}
-      <button
-        onClick={() => { haptic(16); onDelete(expense.id); }}
-        style={{
-          display: "flex", alignItems: "center", gap: 8, margin: "12px auto 0",
-          background: "none", border: "none", color: "#ff453a", fontSize: 15, fontWeight: 700, cursor: "pointer",
-        }}>
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ff453a" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13" /></svg>
-        Delete
-      </button>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginTop: 12 }}>
+        <button
+          onClick={() => { haptic(8); onEdit(expense); }}
+          style={actionButton("var(--surface2,#2c2c2e)", "var(--ink,#fff)")}>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z" /></svg>
+          Edit
+        </button>
+        <button
+          onClick={() => { haptic(16); onDelete(expense.id); }}
+          style={actionButton("transparent", "#ff453a")}>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ff453a" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13" /></svg>
+          Delete
+        </button>
+      </div>
     </div>
   );
 }
@@ -68,4 +72,12 @@ function Row({ label, value, icon }: { label: string; value: React.ReactNode; ic
 
 function Divider() {
   return <div style={{ borderTop: "1.5px dotted var(--ticket-line,#dcdce1)" }} />;
+}
+
+function actionButton(bg: string, color: string): React.CSSProperties {
+  return {
+    minWidth: 94, height: 38, borderRadius: 999, border: "none", background: bg, color,
+    display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
+    fontSize: 15, fontWeight: 700, cursor: "pointer",
+  };
 }
