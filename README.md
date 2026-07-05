@@ -14,7 +14,7 @@ Log a daily expense in a couple of taps, browse your spending on a calendar, and
 - **Statistics** — monthly total, average per expense, top category, and a per‑category ranked bar breakdown, with month navigation.
 - **Multi‑user auth** — email/password sign‑up and login (NextAuth + bcrypt). Every user only sees their own expenses.
 - **Themes & icons** — noir/snow theme toggle and monochrome/colored‑icon toggle, saved per device.
-- **Mobile‑first & responsive** — fills the screen on a phone; renders inside a device frame on desktop. Installable as a PWA.
+- **Responsive app shell** — fills the available browser viewport on mobile and desktop. Installable as a PWA.
 
 ---
 
@@ -71,7 +71,7 @@ To create a *new* migration after changing `schema.prisma`:
 ```bash
 npm run db:migrate -- --name your_change   # prisma migrate dev
 ```
-Open **http://localhost:3000**, create an account, and start logging expenses. For the best experience, view it on a phone or in your browser's mobile/device‑emulation mode (390 × 844).
+Open **http://localhost:3000**, create an account, and start logging expenses.
 
 ---
 
@@ -109,7 +109,7 @@ components/
   Stats.tsx                  Category stats + tiles
   AddSheet.tsx               Add/edit sheet: keypad, categories, date, payment
   SettingsSheet.tsx          Theme/icon toggles + sign out
-  TabBar.tsx  StatusBar.tsx  CatBadge.tsx  Icon.tsx  ThemeContext.tsx
+  TabBar.tsx  CatBadge.tsx  Icon.tsx  ThemeContext.tsx
 lib/
   prisma.ts  auth.ts         DB client + NextAuth config
   api.ts                     Typed client-side fetch helpers

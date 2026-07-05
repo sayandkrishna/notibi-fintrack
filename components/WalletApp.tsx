@@ -4,7 +4,6 @@ import { api, Expense, haptic } from "@/lib/api";
 import { CategoryKey, PaymentKey, THEMES } from "@/lib/constants";
 import { todayIso, isoOf, pad } from "@/lib/format";
 import { useTheme } from "@/components/ThemeContext";
-import StatusBar from "@/components/StatusBar";
 import TabBar from "@/components/TabBar";
 import Home from "@/components/Home";
 import CalendarView from "@/components/CalendarView";
@@ -147,8 +146,6 @@ export default function WalletApp({ userName }: { userName: string }) {
   return (
     <div className="device-wrap">
       <div className="device" style={rootStyle}>
-        <StatusBar />
-
         {screen === "home" && (
           <Home
             expenses={expenses}

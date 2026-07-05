@@ -112,7 +112,7 @@ export default function Home(p: Props) {
   const monthLabel = `${MON[p.view.m]} ${p.view.y}`.toUpperCase();
 
   return (
-    <div style={{ position: "absolute", inset: 0, top: 38, bottom: 0, overflowY: "auto", padding: "6px 18px 130px" }}>
+    <div style={{ position: "absolute", inset: 0, bottom: 0, overflowY: "auto", padding: "6px 18px 130px" }}>
       {/* title */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 2px 14px" }}>
         <span style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.8px" }}>Wallet</span>

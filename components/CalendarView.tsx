@@ -68,7 +68,7 @@ export default function CalendarView(p: Props) {
   };
 
   return (
-    <div style={{ position: "absolute", inset: 0, top: 38, bottom: 0, overflowY: "auto", padding: "6px 18px 130px" }}>
+    <div style={{ position: "absolute", inset: 0, bottom: 0, overflowY: "auto", padding: "6px 18px 130px" }}>
       {/* header */}
       <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", padding: "10px 2px 8px" }}>
         <div>

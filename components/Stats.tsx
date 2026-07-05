@@ -45,7 +45,7 @@ export default function Stats(p: Props) {
   const topCat = rows[0]?.cat.name ?? "—";
 
   return (
-    <div style={{ position: "absolute", inset: 0, top: 38, bottom: 0, overflowY: "auto", padding: "6px 18px 130px" }}>
+    <div style={{ position: "absolute", inset: 0, bottom: 0, overflowY: "auto", padding: "6px 18px 130px" }}>
       <div style={{ padding: "10px 2px 18px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.8px" }}>Spending</div>
