@@ -157,7 +157,6 @@ export default function WalletApp({ userName }: { userName: string }) {
             newId={newId}
             onClearFilter={() => { haptic(6); setDateFilter(null); }}
             onOpenAdd={openAdd}
-            onOpenSettings={() => setSettingsOpen(true)}
             onEdit={startEdit}
             onDelete={del}
             onOpenTicket={openTicket}
