@@ -1,9 +1,17 @@
 "use client";
 import Icon from "@/components/Icon";
+import { haptic } from "@/lib/api";
 import { useTheme } from "@/components/ThemeContext";
 import type { Screen } from "@/components/WalletApp";
 
-export default function TabBar({ screen, goto }: { screen: Screen; goto: (s: Screen) => void }) {
+export default function TabBar({
+  screen, goto, onOpenSettings, settingsOpen,
+}: {
+  screen: Screen;
+  goto: (s: Screen) => void;
+  onOpenSettings: () => void;
+  settingsOpen?: boolean;
+}) {
   const { theme } = useTheme();
   const inkHex = theme === "noir" ? "#ffffff" : "#000000";
   const items: { key: Screen; label: string; icon: string }[] = [
@@ -31,6 +39,18 @@ export default function TabBar({ screen, goto }: { screen: Screen; goto: (s: Scr
             </button>
           );
         })}
+        {(() => {
+          const col = settingsOpen ? inkHex : "#8e8e93";
+          return (
+            <button onClick={() => { haptic(6); onOpenSettings(); }} className="pressable" style={{
+              flex: 1, background: "none", border: "none", display: "flex", flexDirection: "column",
+              alignItems: "center", gap: 3, cursor: "pointer", padding: "6px 0", color: col,
+            }}>
+              <Icon name="settings" color={col} size={24} />
+              <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: ".1px" }}>Settings</span>
+            </button>
+          );
+        })()}
       </div>
       <div style={{ height: 5, width: 134, borderRadius: 100, background: "var(--ink,#fff)", opacity: .85, margin: "2px auto 8px" }} />
     </div>

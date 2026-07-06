@@ -182,7 +182,7 @@ export default function WalletApp({ userName }: { userName: string }) {
           <Stats expenses={expenses} view={view} setView={setView} />
         )}
 
-        <TabBar screen={screen} goto={goto} />
+        <TabBar screen={screen} goto={goto} onOpenSettings={() => setSettingsOpen(true)} settingsOpen={settingsOpen} />
 
         {addOpen && (
           <AddSheet

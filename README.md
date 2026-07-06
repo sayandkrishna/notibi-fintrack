@@ -125,7 +125,7 @@ middleware.ts                Protects /wallet
 All expense endpoints require an authenticated session and are automatically scoped to the logged‑in user.
 
 | Method | Route                    | Body / Query                                             | Description                     |
-|--------|--------------------------|---------------------------------------------------------|---------------------------------|
+|--------|--------------------------|-----------------------------------------------------------|---------------------------------|
 | POST   | `/api/signup`            | `{ name?, email, password }`                            | Create an account               |
 | GET    | `/api/expenses`          | `?date=YYYY-MM-DD` or `?month=YYYY-MM` (optional)       | List expenses                   |
 | POST   | `/api/expenses`          | `{ amount, category, payment, date, note? }`            | Create an expense               |
